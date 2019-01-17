@@ -26,7 +26,8 @@ class CDN(object):
 def cdn_url_for(endpoint, **values):
     url = url_for(endpoint, **values)
     if endpoint == 'static':
-        parts = url_parse(url, scheme=current_app.config['CDN_SCHEME'])
+        parts = url_parse(url)
+        parts.scheme = current_app.config['CDN_SCHEME']
         parts.netloc = current_app.config['CDN_DOMAIN']
         url = url_unparse(parts)
     return url
