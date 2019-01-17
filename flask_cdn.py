@@ -31,10 +31,12 @@ class CDN(object):
 def _url_for(endpoint, **values):
     url = url_for(endpoint, **values)
     if endpoint == 'static':
-        parts = url_parse(url)
-        parts.scheme = current_app.config['CDN_SCHEME']
-        parts.netloc = current_app.config['CDN_DOMAIN']
-        url = url_unparse(parts)
+        # noinspection PyProtectedMember
+        components = url_parse(url)._replace(
+            scheme=current_app.config['CDN_SCHEME'],
+            netloc=current_app.config['CDN_DOMAIN'],
+        )
+        url = url_unparse(components)
     return url
 
 
